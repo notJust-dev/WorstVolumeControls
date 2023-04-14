@@ -6,13 +6,15 @@ import { Audio } from 'expo-av';
 import { useVolume } from '../contexts/VolumeContext';
 import Slider from '@react-native-community/slider';
 
-const MusicPlayer = () => {
+const MusicPlayer = ({ animated = false }) => {
   const [playing, setPlaying] = useState(false);
   const [sound, setSound] = useState();
   const [playbackPosition, setPlaybackPosition] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const { volume } = useVolume();
+  const { volume: normalVolume, sharedVolume } = useVolume();
+
+  const volume = animated ? sharedVolume.value : normalVolume;
 
   useEffect(() => {
     Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
